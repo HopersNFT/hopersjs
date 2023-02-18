@@ -1,5 +1,5 @@
 {
-	"name": "@hopers/library",
+	"name": "@hopersio/library",
 	"version": "0.1.0",
 	"scripts": {
 		"build": "lerna run prepare --parallel",

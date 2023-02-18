@@ -1,6 +1,6 @@
 {
-	"name": "@hopers/contracts",
-	"version": "0.8.4",
+	"name": "@hopersio/contracts",
+	"version": "0.1.0",
 	"description": "Hopers.io contracts frontend library",
 	"author": "Marius Modlich <marius@digitalkitchen.zone>",
 	"homepage": "https://github.com/HopersNFT/hopers#readme",
@@ -67,5 +67,6 @@
 		"@cosmjs/proto-signing": "0.29.5",
 		"@cosmjs/stargate": "0.29.5",
 		"cosmwasm": "1.1.1"
-	}
+	},
+	"gitHead": "4ba6e938c5c780489c71b248a566bcf1607fc3fc"
 }

@@ -1,15 +1,11 @@
 {
 	"lerna": "3.4.2",
-	"useWorkspaces": true,
+	"useWorkspaces": false,
 	"conventionalCommits": true,
-	"npmClient": "npm",
-	"npmClientArgs": [
-		"--no-lockfile"
-	],
-	"packages": [
-		"packages/*"
-	],
-	"version": "0.8.4",
+	"npmClient": "yarn",
+	"npmClientArgs": ["--no-lockfile"],
+	"packages": ["packages/*"],
+	"version": "0.1.0",
 	"registry": "https://registry.npmjs.org",
 	"command": {
 		"create": {
