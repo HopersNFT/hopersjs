@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.4](https://github.com/HopersNFT/hopersjs/compare/v0.8.3...v0.8.4) (2023-02-18)
+
+**Note:** Version bump only for package @hopers/contracts
+
+
+
+
+
 ## 0.8.3 (2023-02-18)
 
 **Note:** Version bump only for package @hopers/contracts
