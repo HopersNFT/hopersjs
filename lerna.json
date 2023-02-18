@@ -3,9 +3,13 @@
 	"useWorkspaces": true,
 	"conventionalCommits": true,
 	"npmClient": "npm",
-	"npmClientArgs": ["--no-lockfile"],
-	"packages": ["packages/*"],
-	"version": "0.8.2",
+	"npmClientArgs": [
+		"--no-lockfile"
+	],
+	"packages": [
+		"packages/*"
+	],
+	"version": "0.8.3",
 	"registry": "https://registry.npmjs.org",
 	"command": {
 		"create": {

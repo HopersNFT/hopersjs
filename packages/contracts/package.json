@@ -1,6 +1,6 @@
 {
   "name": "@hopers/contracts",
-  "version": "0.1.0",
+  "version": "0.8.3",
   "private": false,
   "description": "Hopers.io contracts frontend library",
   "author": "Marius Modlich <marius@digitalkitchen.zone>",

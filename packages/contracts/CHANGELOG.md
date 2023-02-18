@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.8.3 (2023-02-18)
+
+**Note:** Version bump only for package @hopers/contracts
+
+
+
+
+
 # [0.8.0](https://github.com/DigitalKitchenLabs/interface/compare/v0.7.6...v0.8.0) (2023-01-17)
 
 **Note:** Version bump only for package @coolcatchain/contracts
