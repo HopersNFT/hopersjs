@@ -1,0 +1,21 @@
+{
+	"lerna": "3.4.2",
+	"useWorkspaces": true,
+	"conventionalCommits": true,
+	"npmClient": "npm",
+	"npmClientArgs": ["--no-lockfile"],
+	"packages": ["packages/*"],
+	"version": "0.8.2",
+	"registry": "https://registry.npmjs.org",
+	"command": {
+		"create": {
+			"homepage": "https://github.com/HopersNFT/hopersjs",
+			"license": "SEE LICENSE IN LICENSE",
+			"access": "restricted"
+		},
+		"publish": {
+			"allowBranch": "main",
+			"message": "chore(release): publish"
+		}
+	}
+}
