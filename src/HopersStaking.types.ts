@@ -4,6 +4,21 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Uint128 = string;
+export type Denom = {
+  native: string;
+} | {
+  cw20: Addr;
+};
+export type Addr = string;
+export interface Config {
+  admin: string;
+  distribution_schedule: [number, number, Uint128][];
+  lock_duration: number;
+  lp_token_contract: string;
+  reward_token: Denom;
+  [k: string]: unknown;
+}
 export type ExecuteMsg = {
   receive: Cw20ReceiveMsg;
 } | {
@@ -46,14 +61,7 @@ export type ExecuteMsg = {
     [k: string]: unknown;
   };
 };
-export type Uint128 = string;
 export type Binary = string;
-export type Denom = {
-  native: string;
-} | {
-  cw20: Addr;
-};
-export type Addr = string;
 export interface Cw20ReceiveMsg {
   amount: Uint128;
   msg: Binary;
@@ -96,10 +104,23 @@ export type QueryMsg = {
   };
 };
 export type Decimal = string;
+export interface StakerInfo {
+  address: string;
+  bond_amount: Uint128;
+  pending_reward: Uint128;
+  reward_index: Decimal;
+  [k: string]: unknown;
+}
 export interface State {
   global_reward_index: Decimal;
   last_distributed: number;
   total_bond_amount: Uint128;
+  [k: string]: unknown;
+}
+export interface UnbondingInfo {
+  address: string;
+  amount: Uint128;
+  time: number;
   [k: string]: unknown;
 }
 export type HopersStakingExecuteMsg = ExecuteMsg;

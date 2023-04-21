@@ -8,7 +8,7 @@ import { Coin } from "@cosmjs/amino";
 import { MsgExecuteContractEncodeObject } from "cosmwasm";
 import { MsgExecuteContract } from "cosmjs-types/cosmwasm/wasm/v1/tx";
 import { toUtf8 } from "@cosmjs/encoding";
-import { ExecuteMsg, Uint128, Binary, Denom, Addr, Cw20ReceiveMsg, InstantiateMsg, QueryMsg, Decimal, State } from "./HopersStaking.types";
+import { Uint128, Denom, Addr, Config, ExecuteMsg, Binary, Cw20ReceiveMsg, InstantiateMsg, QueryMsg, Decimal, StakerInfo, State, UnbondingInfo } from "./HopersStaking.types";
 export interface HopersStakingMessage {
   contractAddress: string;
   sender: string;
