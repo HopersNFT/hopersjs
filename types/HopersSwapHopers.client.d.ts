@@ -5,7 +5,7 @@
 */
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { Uint128, BalanceResponse, Expiration, TokenSelect, Addr, InfoResponse, Token1ForToken2PriceResponse, Token2ForToken1PriceResponse } from "./HopersSwapHopers.types";
+import { Uint128, WalletInfo, Expiration, TokenSelect, BalanceResponse, FeeResponse, InfoResponse, Token1ForToken2PriceResponse, Token2ForToken1PriceResponse } from "./HopersSwapHopers.types";
 export interface HopersSwapHopersReadOnlyInterface {
     contractAddress: string;
     balance: ({ address }: {
@@ -18,6 +18,7 @@ export interface HopersSwapHopersReadOnlyInterface {
     token2ForToken1Price: ({ token2Amount }: {
         token2Amount: Uint128;
     }) => Promise<Token2ForToken1PriceResponse>;
+    fee: () => Promise<FeeResponse>;
 }
 export declare class HopersSwapHopersQueryClient implements HopersSwapHopersReadOnlyInterface {
     client: CosmWasmClient;
@@ -33,6 +34,7 @@ export declare class HopersSwapHopersQueryClient implements HopersSwapHopersRead
     token2ForToken1Price: ({ token2Amount }: {
         token2Amount: Uint128;
     }) => Promise<Token2ForToken1PriceResponse>;
+    fee: () => Promise<FeeResponse>;
 }
 export interface HopersSwapHopersInterface extends HopersSwapHopersReadOnlyInterface {
     contractAddress: string;
@@ -49,30 +51,32 @@ export interface HopersSwapHopersInterface extends HopersSwapHopersReadOnlyInter
         minToken1: Uint128;
         minToken2: Uint128;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    swapToken1ForToken2: ({ expiration, minToken2, token1Amount }: {
+    swap: ({ expiration, inputAmount, inputToken, minOutput }: {
         expiration?: Expiration;
-        minToken2: Uint128;
-        token1Amount: Uint128;
+        inputAmount: Uint128;
+        inputToken: TokenSelect;
+        minOutput: Uint128;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    swapToken2ForToken1: ({ expiration, minToken1, token2Amount }: {
-        expiration?: Expiration;
-        minToken1: Uint128;
-        token2Amount: Uint128;
-    }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    multiContractSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken, outputToken }: {
+    passThroughSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken }: {
         expiration?: Expiration;
         inputToken: TokenSelect;
         inputTokenAmount: Uint128;
-        outputAmmAddress: Addr;
+        outputAmmAddress: string;
         outputMinToken: Uint128;
-        outputToken: TokenSelect;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    swapTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
+    swapAndSendTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
         expiration?: Expiration;
         inputAmount: Uint128;
         inputToken: TokenSelect;
         minToken: Uint128;
-        recipient: Addr;
+        recipient: string;
+    }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+    updateConfig: ({ burnFeePercentNumerator, devWalletLists, feePercentDenominator, feePercentNumerator, owner }: {
+        burnFeePercentNumerator: Uint128;
+        devWalletLists: WalletInfo[];
+        feePercentDenominator: Uint128;
+        feePercentNumerator: Uint128;
+        owner?: string;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export declare class HopersSwapHopersClient extends HopersSwapHopersQueryClient implements HopersSwapHopersInterface {
@@ -92,29 +96,31 @@ export declare class HopersSwapHopersClient extends HopersSwapHopersQueryClient 
         minToken1: Uint128;
         minToken2: Uint128;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    swapToken1ForToken2: ({ expiration, minToken2, token1Amount }: {
+    swap: ({ expiration, inputAmount, inputToken, minOutput }: {
         expiration?: Expiration;
-        minToken2: Uint128;
-        token1Amount: Uint128;
+        inputAmount: Uint128;
+        inputToken: TokenSelect;
+        minOutput: Uint128;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    swapToken2ForToken1: ({ expiration, minToken1, token2Amount }: {
-        expiration?: Expiration;
-        minToken1: Uint128;
-        token2Amount: Uint128;
-    }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    multiContractSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken, outputToken }: {
+    passThroughSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken }: {
         expiration?: Expiration;
         inputToken: TokenSelect;
         inputTokenAmount: Uint128;
-        outputAmmAddress: Addr;
+        outputAmmAddress: string;
         outputMinToken: Uint128;
-        outputToken: TokenSelect;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-    swapTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
+    swapAndSendTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
         expiration?: Expiration;
         inputAmount: Uint128;
         inputToken: TokenSelect;
         minToken: Uint128;
-        recipient: Addr;
+        recipient: string;
+    }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+    updateConfig: ({ burnFeePercentNumerator, devWalletLists, feePercentDenominator, feePercentNumerator, owner }: {
+        burnFeePercentNumerator: Uint128;
+        devWalletLists: WalletInfo[];
+        feePercentDenominator: Uint128;
+        feePercentNumerator: Uint128;
+        owner?: string;
     }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }

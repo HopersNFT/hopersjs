@@ -11,54 +11,42 @@ export type Denom = {
   cw20: Addr;
 };
 export type Addr = string;
-export interface Config {
-  admin: string;
+export interface InstantiateMsg {
   distribution_schedule: [number, number, Uint128][];
   lock_duration: number;
   lp_token_contract: string;
   reward_token: Denom;
-  [k: string]: unknown;
 }
 export type ExecuteMsg = {
   receive: Cw20ReceiveMsg;
 } | {
   unbond: {
     amount: Uint128;
-    [k: string]: unknown;
   };
 } | {
-  withdraw: {
-    [k: string]: unknown;
-  };
+  withdraw: {};
 } | {
-  redeem: {
-    [k: string]: unknown;
-  };
+  redeem: {};
 } | {
   migrate_staking: {
     new_staking_contract: string;
-    [k: string]: unknown;
   };
 } | {
   update_config: {
     distribution_schedule: [number, number, Uint128][];
-    [k: string]: unknown;
   };
 } | {
   update_admin: {
     admin: string;
-    [k: string]: unknown;
   };
 } | {
   update_token_contract: {
     lp_token_contract: string;
     reward_token: Denom;
-    [k: string]: unknown;
   };
 } | {
   update_lock_duration: {
     lock_duration: number;
-    [k: string]: unknown;
   };
 };
 export type Binary = string;
@@ -68,42 +56,32 @@ export interface Cw20ReceiveMsg {
   sender: string;
   [k: string]: unknown;
 }
-export interface InstantiateMsg {
-  distribution_schedule: [number, number, Uint128][];
-  lock_duration: number;
-  lp_token_contract: string;
-  reward_token: Denom;
-  [k: string]: unknown;
-}
 export type QueryMsg = {
-  config: {
-    [k: string]: unknown;
-  };
+  config: {};
 } | {
   state: {
     block_time?: number | null;
-    [k: string]: unknown;
   };
 } | {
   staker_info: {
     staker: string;
-    [k: string]: unknown;
   };
 } | {
   all_stakers: {
     limit?: number | null;
     start_after?: string | null;
-    [k: string]: unknown;
   };
 } | {
   unbonding_info: {
     limit?: number | null;
     staker: string;
     start_after?: number | null;
-    [k: string]: unknown;
   };
 };
 export type Decimal = string;
+export interface StakersListResponse {
+  stakers_list: StakerInfo[];
+}
 export interface StakerInfo {
   address: string;
   bond_amount: Uint128;
@@ -111,11 +89,28 @@ export interface StakerInfo {
   reward_index: Decimal;
   [k: string]: unknown;
 }
-export interface State {
+export interface ConfigResponse {
+  admin: string;
+  distribution_schedule: [number, number, Uint128][];
+  lock_duration: number;
+  lp_token_contract: string;
+  reward_token: Denom;
+}
+export interface StakerInfoResponse {
+  bond_amount: Uint128;
+  pending_reward: Uint128;
+  reward_index: Decimal;
+  staker: string;
+  total_earned: Uint128;
+}
+export interface StateResponse {
   global_reward_index: Decimal;
   last_distributed: number;
   total_bond_amount: Uint128;
-  [k: string]: unknown;
+}
+export interface UnbondingInfoResponse {
+  crr_time: number;
+  unbonding_info: UnbondingInfo[];
 }
 export interface UnbondingInfo {
   address: string;

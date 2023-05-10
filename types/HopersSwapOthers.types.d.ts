@@ -3,10 +3,28 @@
 * DO NOT MODIFY IT BY HAND. Instead, modify the source JSONSchema file,
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
+export type Decimal = string;
 export type Uint128 = string;
-export interface BalanceResponse {
-    balance: Uint128;
-    [k: string]: unknown;
+export type Denom = {
+    native: string;
+} | {
+    cw20: Addr;
+};
+export type Addr = string;
+export interface InstantiateMsg {
+    dev_wallet_lists: WalletInfo[];
+    fee_percent_denominator: Uint128;
+    fee_percent_numerator: Uint128;
+    lp_token_code_id: number;
+    lp_token_name: string;
+    lp_token_symbol: string;
+    owner?: string | null;
+    token1_denom: Denom;
+    token2_denom: Denom;
+}
+export interface WalletInfo {
+    address: string;
+    ratio: Decimal;
 }
 export type ExecuteMsg = {
     add_liquidity: {
@@ -14,7 +32,6 @@ export type ExecuteMsg = {
         max_token2: Uint128;
         min_liquidity: Uint128;
         token1_amount: Uint128;
-        [k: string]: unknown;
     };
 } | {
     remove_liquidity: {
@@ -22,40 +39,36 @@ export type ExecuteMsg = {
         expiration?: Expiration | null;
         min_token1: Uint128;
         min_token2: Uint128;
-        [k: string]: unknown;
     };
 } | {
-    swap_token1_for_token2: {
+    swap: {
         expiration?: Expiration | null;
-        min_token2: Uint128;
-        token1_amount: Uint128;
-        [k: string]: unknown;
+        input_amount: Uint128;
+        input_token: TokenSelect;
+        min_output: Uint128;
     };
 } | {
-    swap_token2_for_token1: {
-        expiration?: Expiration | null;
-        min_token1: Uint128;
-        token2_amount: Uint128;
-        [k: string]: unknown;
-    };
-} | {
-    multi_contract_swap: {
+    pass_through_swap: {
         expiration?: Expiration | null;
         input_token: TokenSelect;
         input_token_amount: Uint128;
-        output_amm_address: Addr;
+        output_amm_address: string;
         output_min_token: Uint128;
-        output_token: TokenSelect;
-        [k: string]: unknown;
     };
 } | {
-    swap_to: {
+    swap_and_send_to: {
         expiration?: Expiration | null;
         input_amount: Uint128;
         input_token: TokenSelect;
         min_token: Uint128;
-        recipient: Addr;
-        [k: string]: unknown;
+        recipient: string;
+    };
+} | {
+    update_config: {
+        dev_wallet_lists: WalletInfo[];
+        fee_percent_denominator: Uint128;
+        fee_percent_numerator: Uint128;
+        owner?: string | null;
     };
 };
 export type Expiration = {
@@ -69,57 +82,47 @@ export type Expiration = {
 };
 export type Timestamp = Uint64;
 export type Uint64 = string;
-export type TokenSelect = "Token1" | "Token2";
-export type Addr = string;
-export interface InfoResponse {
-    lp_token_supply: Uint128;
-    token1_address?: string | null;
-    token1_denom: string;
-    token1_reserve: Uint128;
-    token2_address?: string | null;
-    token2_denom: string;
-    token2_reserve: Uint128;
-    [k: string]: unknown;
-}
-export interface InstantiateMsg {
-    token1_address?: Addr | null;
-    token1_denom: string;
-    token2_address?: Addr | null;
-    token2_denom: string;
-    [k: string]: unknown;
-}
+export type TokenSelect = "token1" | "token2";
 export type QueryMsg = {
     balance: {
         address: string;
-        [k: string]: unknown;
     };
 } | {
-    info: {
-        [k: string]: unknown;
-    };
+    info: {};
 } | {
     token1_for_token2_price: {
         token1_amount: Uint128;
-        [k: string]: unknown;
     };
 } | {
     token2_for_token1_price: {
         token2_amount: Uint128;
-        [k: string]: unknown;
     };
+} | {
+    fee: {};
 };
-export interface Token {
-    address?: Addr | null;
-    denom: string;
-    reserve: Uint128;
+export interface MigrateMsg {
+}
+export interface BalanceResponse {
+    balance: Uint128;
     [k: string]: unknown;
+}
+export interface FeeResponse {
+    dev_wallet_lists: WalletInfo[];
+    owner?: string | null;
+    total_fee_percent: Decimal;
+}
+export interface InfoResponse {
+    lp_token_address: string;
+    lp_token_supply: Uint128;
+    token1_denom: Denom;
+    token1_reserve: Uint128;
+    token2_denom: Denom;
+    token2_reserve: Uint128;
 }
 export interface Token1ForToken2PriceResponse {
     token2_amount: Uint128;
-    [k: string]: unknown;
 }
 export interface Token2ForToken1PriceResponse {
     token1_amount: Uint128;
-    [k: string]: unknown;
 }
 export type HopersSwapOthersExecuteMsg = ExecuteMsg;

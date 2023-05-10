@@ -4,52 +4,43 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
-export interface AllAccountsResponse {
-  accounts: string[];
-  [k: string]: unknown;
-}
 export type Uint128 = string;
-export type Expiration = {
-  at_height: number;
+export type Logo = {
+  url: string;
 } | {
-  at_time: Timestamp;
-} | {
-  never: {
-    [k: string]: unknown;
-  };
+  embedded: EmbeddedLogo;
 };
-export type Timestamp = Uint64;
-export type Uint64 = string;
-export interface AllAllowancesResponse {
-  allowances: AllowanceInfo[];
+export type EmbeddedLogo = {
+  svg: Binary;
+} | {
+  png: Binary;
+};
+export type Binary = string;
+export interface InstantiateMsg {
+  decimals: number;
+  initial_balances: Cw20Coin[];
+  marketing?: InstantiateMarketingInfo | null;
+  mint?: MinterResponse | null;
+  name: string;
+  symbol: string;
+}
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
   [k: string]: unknown;
 }
-export interface AllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  spender: string;
+export interface InstantiateMarketingInfo {
+  description?: string | null;
+  logo?: Logo | null;
+  marketing?: string | null;
+  project?: string | null;
+}
+export interface MinterResponse {
+  cap?: Uint128 | null;
+  minter: string;
   [k: string]: unknown;
 }
-export interface AllSpenderAllowancesResponse {
-  allowances: SpenderAllowanceInfo[];
-  [k: string]: unknown;
-}
-export interface SpenderAllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  owner: string;
-  [k: string]: unknown;
-}
-export interface AllowanceResponse {
-  allowance: Uint128;
-  expires: Expiration;
-  [k: string]: unknown;
-}
-export interface BalanceResponse {
-  balance: Uint128;
-  [k: string]: unknown;
-}
-export type Cw20ExecuteMsg = {
+export type ExecuteMsg = {
   transfer: {
     amount: Uint128;
     recipient: string;
@@ -123,91 +114,101 @@ export type Cw20ExecuteMsg = {
 } | {
   upload_logo: Logo;
 };
-export type Binary = string;
-export type Logo = {
-  url: string;
+export type Expiration = {
+  at_height: number;
 } | {
-  embedded: EmbeddedLogo;
-};
-export type EmbeddedLogo = {
-  svg: Binary;
+  at_time: Timestamp;
 } | {
-  png: Binary;
+  never: {
+    [k: string]: unknown;
+  };
 };
-export interface InstantiateMsg {
-  decimals: number;
-  initial_balances: Cw20Coin[];
-  marketing?: InstantiateMarketingInfo | null;
-  mint?: MinterResponse | null;
-  name: string;
-  symbol: string;
-  [k: string]: unknown;
-}
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
-  [k: string]: unknown;
-}
-export interface InstantiateMarketingInfo {
-  description?: string | null;
-  logo?: Logo | null;
-  marketing?: string | null;
-  project?: string | null;
-  [k: string]: unknown;
-}
-export interface MinterResponse {
-  cap?: Uint128 | null;
-  minter: string;
-  [k: string]: unknown;
-}
+export type Timestamp = Uint64;
+export type Uint64 = string;
 export type QueryMsg = {
   balance: {
     address: string;
-    [k: string]: unknown;
   };
 } | {
-  token_info: {
-    [k: string]: unknown;
-  };
+  token_info: {};
 } | {
-  minter: {
-    [k: string]: unknown;
-  };
+  minter: {};
 } | {
   allowance: {
     owner: string;
     spender: string;
-    [k: string]: unknown;
   };
 } | {
   all_allowances: {
     limit?: number | null;
     owner: string;
     start_after?: string | null;
-    [k: string]: unknown;
   };
 } | {
   all_spender_allowances: {
     limit?: number | null;
     spender: string;
     start_after?: string | null;
-    [k: string]: unknown;
   };
 } | {
   all_accounts: {
     limit?: number | null;
     start_after?: string | null;
-    [k: string]: unknown;
   };
 } | {
-  marketing_info: {
-    [k: string]: unknown;
-  };
+  marketing_info: {};
 } | {
-  download_logo: {
-    [k: string]: unknown;
-  };
+  download_logo: {};
 };
+export interface AllAccountsResponse {
+  accounts: string[];
+  [k: string]: unknown;
+}
+export interface AllAllowancesResponse {
+  allowances: AllowanceInfo[];
+  [k: string]: unknown;
+}
+export interface AllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  spender: string;
+  [k: string]: unknown;
+}
+export interface AllSpenderAllowancesResponse {
+  allowances: SpenderAllowanceInfo[];
+  [k: string]: unknown;
+}
+export interface SpenderAllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  owner: string;
+  [k: string]: unknown;
+}
+export interface AllowanceResponse {
+  allowance: Uint128;
+  expires: Expiration;
+  [k: string]: unknown;
+}
+export interface BalanceResponse {
+  balance: Uint128;
+  [k: string]: unknown;
+}
+export interface DownloadLogoResponse {
+  data: Binary;
+  mime_type: string;
+  [k: string]: unknown;
+}
+export type LogoInfo = {
+  url: string;
+} | "embedded";
+export type Addr = string;
+export interface MarketingInfoResponse {
+  description?: string | null;
+  logo?: LogoInfo | null;
+  marketing?: Addr | null;
+  project?: string | null;
+  [k: string]: unknown;
+}
 export interface TokenInfoResponse {
   decimals: number;
   name: string;
@@ -215,3 +216,4 @@ export interface TokenInfoResponse {
   total_supply: Uint128;
   [k: string]: unknown;
 }
+export type CW20BaseExecuteMsg = ExecuteMsg;
