@@ -5,7 +5,7 @@
 */
 import { Coin } from "@cosmjs/amino";
 import { MsgExecuteContractEncodeObject } from "cosmwasm";
-import { Uint128, Expiration, TokenSelect, Addr } from "./HopersSwapHopers.types";
+import { Uint128, WalletInfo, Expiration, TokenSelect } from "./HopersSwapHopers.types";
 export interface HopersSwapHopersMessage {
     contractAddress: string;
     sender: string;
@@ -21,30 +21,32 @@ export interface HopersSwapHopersMessage {
         minToken1: Uint128;
         minToken2: Uint128;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    swapToken1ForToken2: ({ expiration, minToken2, token1Amount }: {
+    swap: ({ expiration, inputAmount, inputToken, minOutput }: {
         expiration?: Expiration;
-        minToken2: Uint128;
-        token1Amount: Uint128;
+        inputAmount: Uint128;
+        inputToken: TokenSelect;
+        minOutput: Uint128;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    swapToken2ForToken1: ({ expiration, minToken1, token2Amount }: {
-        expiration?: Expiration;
-        minToken1: Uint128;
-        token2Amount: Uint128;
-    }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    multiContractSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken, outputToken }: {
+    passThroughSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken }: {
         expiration?: Expiration;
         inputToken: TokenSelect;
         inputTokenAmount: Uint128;
-        outputAmmAddress: Addr;
+        outputAmmAddress: string;
         outputMinToken: Uint128;
-        outputToken: TokenSelect;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    swapTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
+    swapAndSendTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
         expiration?: Expiration;
         inputAmount: Uint128;
         inputToken: TokenSelect;
         minToken: Uint128;
-        recipient: Addr;
+        recipient: string;
+    }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
+    updateConfig: ({ burnFeePercentNumerator, devWalletLists, feePercentDenominator, feePercentNumerator, owner }: {
+        burnFeePercentNumerator: Uint128;
+        devWalletLists: WalletInfo[];
+        feePercentDenominator: Uint128;
+        feePercentNumerator: Uint128;
+        owner?: string;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
 }
 export declare class HopersSwapHopersMessageComposer implements HopersSwapHopersMessage {
@@ -63,29 +65,31 @@ export declare class HopersSwapHopersMessageComposer implements HopersSwapHopers
         minToken1: Uint128;
         minToken2: Uint128;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    swapToken1ForToken2: ({ expiration, minToken2, token1Amount }: {
+    swap: ({ expiration, inputAmount, inputToken, minOutput }: {
         expiration?: Expiration;
-        minToken2: Uint128;
-        token1Amount: Uint128;
+        inputAmount: Uint128;
+        inputToken: TokenSelect;
+        minOutput: Uint128;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    swapToken2ForToken1: ({ expiration, minToken1, token2Amount }: {
-        expiration?: Expiration;
-        minToken1: Uint128;
-        token2Amount: Uint128;
-    }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    multiContractSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken, outputToken }: {
+    passThroughSwap: ({ expiration, inputToken, inputTokenAmount, outputAmmAddress, outputMinToken }: {
         expiration?: Expiration;
         inputToken: TokenSelect;
         inputTokenAmount: Uint128;
-        outputAmmAddress: Addr;
+        outputAmmAddress: string;
         outputMinToken: Uint128;
-        outputToken: TokenSelect;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
-    swapTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
+    swapAndSendTo: ({ expiration, inputAmount, inputToken, minToken, recipient }: {
         expiration?: Expiration;
         inputAmount: Uint128;
         inputToken: TokenSelect;
         minToken: Uint128;
-        recipient: Addr;
+        recipient: string;
+    }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
+    updateConfig: ({ burnFeePercentNumerator, devWalletLists, feePercentDenominator, feePercentNumerator, owner }: {
+        burnFeePercentNumerator: Uint128;
+        devWalletLists: WalletInfo[];
+        feePercentDenominator: Uint128;
+        feePercentNumerator: Uint128;
+        owner?: string;
     }, funds?: Coin[]) => MsgExecuteContractEncodeObject;
 }

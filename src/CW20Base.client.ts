@@ -4,8 +4,9 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
-import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { AllAccountsResponse, Uint128, Expiration, Timestamp, Uint64, AllAllowancesResponse, AllowanceInfo, AllSpenderAllowancesResponse, SpenderAllowanceInfo, AllowanceResponse, BalanceResponse, Cw20ExecuteMsg, Binary, Logo, EmbeddedLogo, InstantiateMsg, Cw20Coin, InstantiateMarketingInfo, MinterResponse, QueryMsg, TokenInfoResponse } from "./CW20Base.types";
+import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
+import { Coin, StdFee } from "@cosmjs/amino";
+import { Uint128, Logo, EmbeddedLogo, Binary, InstantiateMsg, Cw20Coin, InstantiateMarketingInfo, MinterResponse, ExecuteMsg, Expiration, Timestamp, Uint64, QueryMsg, AllAccountsResponse, AllAllowancesResponse, AllowanceInfo, AllSpenderAllowancesResponse, SpenderAllowanceInfo, AllowanceResponse, BalanceResponse, DownloadLogoResponse, LogoInfo, Addr, MarketingInfoResponse, TokenInfoResponse } from "./CW20Base.types";
 export interface CW20BaseReadOnlyInterface {
   contractAddress: string;
   balance: ({
@@ -160,5 +161,296 @@ export class CW20BaseQueryClient implements CW20BaseReadOnlyInterface {
     return this.client.queryContractSmart(this.contractAddress, {
       download_logo: {}
     });
+  };
+}
+export interface CW20BaseInterface extends CW20BaseReadOnlyInterface {
+  contractAddress: string;
+  sender: string;
+  transfer: ({
+    amount,
+    recipient
+  }: {
+    amount: Uint128;
+    recipient: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  burn: ({
+    amount
+  }: {
+    amount: Uint128;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  send: ({
+    amount,
+    contract,
+    msg
+  }: {
+    amount: Uint128;
+    contract: string;
+    msg: Binary;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  increaseAllowance: ({
+    amount,
+    expires,
+    spender
+  }: {
+    amount: Uint128;
+    expires?: Expiration;
+    spender: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  decreaseAllowance: ({
+    amount,
+    expires,
+    spender
+  }: {
+    amount: Uint128;
+    expires?: Expiration;
+    spender: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  transferFrom: ({
+    amount,
+    owner,
+    recipient
+  }: {
+    amount: Uint128;
+    owner: string;
+    recipient: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  sendFrom: ({
+    amount,
+    contract,
+    msg,
+    owner
+  }: {
+    amount: Uint128;
+    contract: string;
+    msg: Binary;
+    owner: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  burnFrom: ({
+    amount,
+    owner
+  }: {
+    amount: Uint128;
+    owner: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  mint: ({
+    amount,
+    recipient
+  }: {
+    amount: Uint128;
+    recipient: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  updateMinter: ({
+    newMinter
+  }: {
+    newMinter?: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  updateMarketing: ({
+    description,
+    marketing,
+    project
+  }: {
+    description?: string;
+    marketing?: string;
+    project?: string;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  uploadLogo: (fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+}
+export class CW20BaseClient extends CW20BaseQueryClient implements CW20BaseInterface {
+  client: SigningCosmWasmClient;
+  sender: string;
+  contractAddress: string;
+
+  constructor(client: SigningCosmWasmClient, sender: string, contractAddress: string) {
+    super(client, contractAddress);
+    this.client = client;
+    this.sender = sender;
+    this.contractAddress = contractAddress;
+    this.transfer = this.transfer.bind(this);
+    this.burn = this.burn.bind(this);
+    this.send = this.send.bind(this);
+    this.increaseAllowance = this.increaseAllowance.bind(this);
+    this.decreaseAllowance = this.decreaseAllowance.bind(this);
+    this.transferFrom = this.transferFrom.bind(this);
+    this.sendFrom = this.sendFrom.bind(this);
+    this.burnFrom = this.burnFrom.bind(this);
+    this.mint = this.mint.bind(this);
+    this.updateMinter = this.updateMinter.bind(this);
+    this.updateMarketing = this.updateMarketing.bind(this);
+    this.uploadLogo = this.uploadLogo.bind(this);
+  }
+
+  transfer = async ({
+    amount,
+    recipient
+  }: {
+    amount: Uint128;
+    recipient: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      transfer: {
+        amount,
+        recipient
+      }
+    }, fee, memo, funds);
+  };
+  burn = async ({
+    amount
+  }: {
+    amount: Uint128;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      burn: {
+        amount
+      }
+    }, fee, memo, funds);
+  };
+  send = async ({
+    amount,
+    contract,
+    msg
+  }: {
+    amount: Uint128;
+    contract: string;
+    msg: Binary;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      send: {
+        amount,
+        contract,
+        msg
+      }
+    }, fee, memo, funds);
+  };
+  increaseAllowance = async ({
+    amount,
+    expires,
+    spender
+  }: {
+    amount: Uint128;
+    expires?: Expiration;
+    spender: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      increase_allowance: {
+        amount,
+        expires,
+        spender
+      }
+    }, fee, memo, funds);
+  };
+  decreaseAllowance = async ({
+    amount,
+    expires,
+    spender
+  }: {
+    amount: Uint128;
+    expires?: Expiration;
+    spender: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      decrease_allowance: {
+        amount,
+        expires,
+        spender
+      }
+    }, fee, memo, funds);
+  };
+  transferFrom = async ({
+    amount,
+    owner,
+    recipient
+  }: {
+    amount: Uint128;
+    owner: string;
+    recipient: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      transfer_from: {
+        amount,
+        owner,
+        recipient
+      }
+    }, fee, memo, funds);
+  };
+  sendFrom = async ({
+    amount,
+    contract,
+    msg,
+    owner
+  }: {
+    amount: Uint128;
+    contract: string;
+    msg: Binary;
+    owner: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      send_from: {
+        amount,
+        contract,
+        msg,
+        owner
+      }
+    }, fee, memo, funds);
+  };
+  burnFrom = async ({
+    amount,
+    owner
+  }: {
+    amount: Uint128;
+    owner: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      burn_from: {
+        amount,
+        owner
+      }
+    }, fee, memo, funds);
+  };
+  mint = async ({
+    amount,
+    recipient
+  }: {
+    amount: Uint128;
+    recipient: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      mint: {
+        amount,
+        recipient
+      }
+    }, fee, memo, funds);
+  };
+  updateMinter = async ({
+    newMinter
+  }: {
+    newMinter?: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      update_minter: {
+        new_minter: newMinter
+      }
+    }, fee, memo, funds);
+  };
+  updateMarketing = async ({
+    description,
+    marketing,
+    project
+  }: {
+    description?: string;
+    marketing?: string;
+    project?: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      update_marketing: {
+        description,
+        marketing,
+        project
+      }
+    }, fee, memo, funds);
+  };
+  uploadLogo = async (fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      upload_logo: {}
+    }, fee, memo, funds);
   };
 }
